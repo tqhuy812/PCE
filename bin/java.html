@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Java Files and Information</title>
+  </head>
+
+  <body>
+    <h1>Java Files and Information</h1>
+    <table width="80%"><tr><td>
+	    <h2>Setting up the Environment</h2>
+	    <p>Although I am not new to Java, my experiences in programming in that language are limited. Also, Java is not a language that is known for its ability to interact with hardware (which, when you think about it, is kind of odd since java was originally designed for embedded systems!) Still, this reputation is fairly well deserved. In order for Java to work with any sort of comm port, you need an extension package. Sun provides a package that allows you to deal with Parallel and Serial Ports called the "Java Communication API". You can download the whole package <a href="http://java.sun.com/products/javacomm/">here</a>.</p>
+	    <p>Still, downloading the extension package is only the first step. Getting the package to work is the major challenge. This took me a couple of days of searching as I tried to run code that, for all intents and purposes, should work. Since I have been working with the Windows platform, I will try to provide a good idea of how to get the Comm module up and running on that platform.</p>
+	    <p>We only really care about three pieces of the download; comm.jar, javax.comm.properties and win32com.dll. These files need to placed in certain locations within your Java installation(s). So, do the following:<br>
+	    <ul>
+	      <li>Copy comm.jar into the directory "(java install)/jre/lib/ext". For windows, there should be an install in C:/Program Files/JavaSoft. The subfolders here may be a little different, mine read "JRE/1.3.1_02/lib/ext". I actually have two installs, one Windows and one Unix, I had to put the file in both.</li>
+	      <li>Copy javax.comm.properties on "(java install)/jre/lib" or, in the case of windows, "JRE/1.3.1_02/lib".</li>
+	      <li>Copy win32com.dll into "(java install)/jre/bin" or, if you are using windows, "JRE/1.3.1_02/lib". If you are running Windows 2K, you MUST have this DLL in the windows side. Otherwise, java will not be able to detect any ports, at all. This is the big hangup that I experienced and took a couple of days to resolve. I didn't realize that my system was looking in this directory. </li></ul>
+	      Now that we have the files, in place, the next step is to test to see if the system can find the ports. For this, I have written a VERY light weight command line Java program that simply lists the ports that you have available. If this thing doesn't work, nothing will (for Win 2K anyways). The program is called <a href="PortLister.java">PortLister</a>. Be sure to compile the code with javac before trying to run it. If it works, you should see a list of ports available on the machine, such as COM1, LPT1, and COM2. If it doesn't, there are a number of errors that you might see. The one I am most familiar with is:<br><br> Exception in thread "main" java.lang.NoClassDefFoundError:<br> 
+javax.comm/CommPortIdentifier<br>
+        at PortLister.main(PortLister.java:12)<br><br>
+This means that one or more of the files listed above has not been placed where it needs to be. Check for the JavaSoft folder and make sure that you are running java as "java" and not something like "../bin/java" using cygwin.</p>
+	    <p> Once this program works, you are all set up and ready to run. </p>
+	    <h2>Working with the Serial Port</h2>
+	    <p> Java provides a slick interface for dealing with serial ports, this is one of the reasons that we chose it (ie, it tends to do things like that). It does take some getting used to. If you have downloaded the PortLister.java file you may have noticed a call to the static function "getPortIdentifiers()". This one of about three ways to get a comm object, and the most recommended. It returns a list of all such objects available that we can then iterate through and chose the one that we want. This is what I do in my next piece of code, one that I call <a href="PortOpener.java">PortOpener</a>. All this code does at present is open up the COM1 port for reading and writing and then closes it. The code is built on top of the PortLister code and is quite rough. I plan to clean it up later when I build the actual interface application for the laser. My next step will be trying to initialize the laser and setting up handlers for when it sends me information.</p>
+	    <h2>Resources</h2>
+	    <p> There are a number of good resources that I have been using to learn about serial ports in Java. This section includes a list as well as copies of some of the files available from Sun and other sources.</p>
+	    <ul>
+	      <li><a href="http://developer.java.sun.com/developer/Books/javaprogramming/cookbook/11.pdf">"Programming Serial and Parallel Ports"</a> from the Java cookbook, Chapter 11. Available online as a PDF. Some of the examples don't appear to work quite right, but it demonstrates the basics quite well. THe first example, not working of course, can be found <a href="PortChooser.java">here</a>.</li>
+	      <li><a href="SimpleRead.java">"SimpleRead.java"</a> From Sun, provides a very straight-forward example of a read operation.</li>
+	      <li><a href="SimpleWrite.java">"SimpleWrite.java"</a> From Sun, provides a straight-forward example of a simple write.</li>
+	      <li><a href="http://www.sys-con.com/java/source/5-6/code.cfm?Page=40">"How to Control a Robot Over the Internet"</a> From the Java Developer's Journal. Yet another example of how to use a serial port. In this case for a web-based control application.</li>
+	    </ul>
+	  </td></tr>
+    </table><br>
+    <hr>
+    <address><a href="mailto:dndunham@ceylon.cs.washington.edu">Daniel Dunham</a></address>
+<!-- Created: Mon Feb 18 10:38:45 PST 2002 -->
+<!-- hhmts start -->
+Last modified: Mon Feb 18 11:54:21 PST 2002
+<!-- hhmts end -->
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Serial Ports on the Personal Server</title>
+  </head>
+
+  <body>
+    <h1>Serial Ports on the Personal Server</h1>
+    <p>There are three main accessible serial ports on the personal servers that we have been using for our 476 class. One of these is hooked via a line-power converter to the DB 9 port poking out the back. This is a special serial port. In particular, it has a console running on it that periodically outputs system information, such as when it decides that the Bluetooth dongle is no longer attached the the USB port and then, a moment later, finds it again and assigns it a new number.<br>
+<h2>The Expansion Headers</h2>
+      The other two are only accessible on the J22 expansion header, pins 10,12 and pins 14,16, respectively. (please see the <a href=Consus.pdf>schematic</a> for more detail.) The first serial port is also available on the header (pins 6,8) but at this location it, like the other ports, runs at 3.3V. If you are using objects like motes, this is great. They run at the same levels and so can be attached directly. But if you are using more standard equipment, you may want to use a line-power tranceiver. I have used two different types. The first was the MAX232 5V tranceiver. I used a voltage divider to bring its levels down to those of the personal server. The second was the MAX3232 3.3-5V model which I have yet to get working entirely satisfactorily. (And it is low priority at the moment.)<br>
+<h2>Software</h2>
+      At the software level, each of these ports corresponds to a device in the /dev directory with a name such as ttySA0. In fact, ttySA0 is the serial prot visible on the DB9 connection and pins 6,8. For the other two ports, ttySA1 corresponds to pins 10,12 while ttySA2 corresponds to pins 14,16. Device ttySA2 is also special because, unlike the other two, it is the UART port on the processor. Accessing these devices is the same as accessing any other device in Linux, treat it like a file. It can be opened, read, written to and closed. Unlike a file though, there are some other considerations that you may need to be aware of, these are the hardware settings for the port.<br> 
+<h2>Port Settings</h2>
+    Configuring the serial ports on the personal server is the same as will any other unix system. C provides facilities to set and read the settings and linux itself has a program called 'stty' that can be used to check and set the settings. Perhaps the easiest way to get started is to using existing code, such as the listen.c app in my tos distribution. This code works for reading packets, but can be modified to act as a listener on the port. I leave this as an exercise to the reader (Ever since entering college and seeing that in textbooks, I've wanted to say that) which shouldn't be too difficult and will provide a bit of a learning experience into C style file I/O. I would also encourage the use of the stty man page for learning how to list a ports settings and change them.</p>
+<h2>Helpful Resources</h2>
+</p>Code found in the tools directory of the tiny OS distribution I've made available called listen.c and inject.c should provide a good starting point. Likewise Tera Term can be set to listen and send (you will only see a response on the screen if it is echoed) characters to and from the port. To check if you can transmit, echo piped to the device can also work well.</p>
+    <hr>
+    <address><a href="mailto:dndunham@ceylon.cs.washington.edu">Daniel Dunham</a></address>
+<!-- Created: Tue Mar 12 16:21:28 PST 2002 -->
+<!-- hhmts start -->
+Last modified: Tue Mar 12 16:51:11 PST 2002
+<!-- hhmts end -->
+  </body>
+</html>
